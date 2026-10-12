@@ -255,7 +255,7 @@ def match_culture(data: dict):
       4. Only one side has a vector → 20 (partial)
     Final score = weighted average (movie=40%, music=35%, food=25%)
     """
-    WEIGHTS = {"movie": 0.40, "music": 0.35, "food": 0.25}
+    WEIGHTS = {"movie": 0.50, "music": 0.30, "food": 0.20}
 
     c_vecs = data["company"].get("vectors", {})
     p_vecs = data["candidate"].get("vectors", {})
@@ -310,11 +310,11 @@ def match_culture(data: dict):
     # Calibrate — apply S-curve to spread scores more naturally
     # cosine tends to cluster high; push middle scores down
     def adjust(s):
-        if s >= 95: return 92
-        if s >= 80: return round(65 + (s - 80) * 1.35)
-        if s >= 60: return round(40 + (s - 60) * 1.25)
-        if s >= 40: return round(20 + (s - 40) * 1.0)
-        return round(s * 0.6)
+        if s >= 95: return 88
+        if s >= 80: return round(50 + (s - 80) * 1.5)
+        if s >= 60: return round(30 + (s - 60) * 1.0)
+        if s >= 40: return round(15 + (s - 40) * 0.75)
+        return round(s * 0.4)
     score = adjust(score)
 
     if score >= 70:
